@@ -1,0 +1,29 @@
+.hero {
+    height: 90vh;
+    background: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)),
+    url('/images/hero.jpg') center/cover;
+    display: flex;
+    align-items: center;
+}
+
+.place-card {
+    border-radius: 16px;
+    overflow: hidden;
+    transition: .3s;
+}
+
+.place-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,.15);
+}
+
+.place-card img {
+    height: 220px;
+    object-fit: cover;
+}
+
+.cta {
+    margin-top: 80px;
+    padding: 80px 0;
+    background: linear-gradient(90deg, #0066ff, #00c6ff);
+}
