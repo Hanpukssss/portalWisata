@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="assets/css/owl.css">
     <link rel="stylesheet" href="assets/css/animate.css">
     <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="{{ asset('assets/css/portal-custom.css') }}">
 <!--
 
 TemplateMo 580 Woox Travel
@@ -44,7 +45,7 @@ https://templatemo.com/tm-580-woox-travel
   <!-- ***** Preloader End ***** -->
 
   <!-- ***** Header Area Start ***** -->
-  <header class="header-area header-sticky">
+  <header class="header-area header-sticky" style="background: linear-gradient(90deg, #0b5568, #0e96b2);">
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -60,7 +61,15 @@ https://templatemo.com/tm-580-woox-travel
                         <li><a href="{{ route('about') }}">About</a></li>
                         <li><a href="{{ route('deals') }}" class="active">Deals</a></li>
                         <li><a href="{{ route('reservation') }}">Reservation</a></li>
-                        <li><a href="{{ route('reservation') }}">Book Yours</a></li>
+                        @guest
+                            <li><a href="{{ route('login') }}">Login</a></li>
+                        @else
+                            @if(auth()->user()->role === 'user')
+                                <li><a href="{{ route('orders.history') }}">Pesanan Saya</a></li>
+                            @endif
+                            <li><a href="#" onclick="document.getElementById('logout-form-deals').submit()">Logout</a></li>
+                            <form id="logout-form-deals" action="{{ route('logout') }}" method="POST" style="display:none;">@csrf</form>
+                        @endguest
                     </ul>
                     <a class='menu-trigger'>
                         <span>Menu</span>
@@ -89,46 +98,9 @@ https://templatemo.com/tm-580-woox-travel
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
-          <form id="search-form" name="gs" method="submit" role="search" action="#">
-            <div class="row">
-              <div class="col-lg-2">
-                <h4>Sort Deals By:</h4>
-              </div>
-              <div class="col-lg-4">
-                  <fieldset>
-                      <select name="Location" class="form-select" aria-label="Default select example" id="chooseLocation" onChange="this.form.click()">
-                          <option selected>Destinations</option>
-                          <option type="checkbox" name="option1" value="Italy">Italy</option>
-                          <option value="France">France</option>
-                          <option value="Switzerland">Switzerland</option>
-                          <option value="Thailand">Thailand</option>
-                          <option value="Australia">Australia</option>
-                          <option value="India">India</option>
-                          <option value="Indonesia">Indonesia</option>
-                          <option value="Malaysia">Malaysia</option>
-                          <option value="Singapore">Singapore</option>
-                      </select>
-                  </fieldset>
-              </div>
-              <div class="col-lg-4">
-                  <fieldset>
-                      <select name="Price" class="form-select" aria-label="Default select example" id="choosePrice" onChange="this.form.click()">
-                          <option selected>Price Range</option>
-                          <option value="100">$100 - $250</option>
-                          <option value="250">$250 - $500</option>
-                          <option value="500">$500 - $1,000</option>
-                          <option value="1000">$1,000 - $2,500</option>
-                          <option value="2500+">$2,500+</option>
-                      </select>
-                  </fieldset>
-              </div>
-              <div class="col-lg-2">
-                  <fieldset>
-                      <button class="border-button">Search Results</button>
-                  </fieldset>
-              </div>
-            </div>
-          </form>
+          <div class="alert alert-info mb-0">
+            Menampilkan penawaran destinasi wisata Kediri yang diinput admin.
+          </div>
         </div>
       </div>
     </div>
@@ -139,143 +111,56 @@ https://templatemo.com/tm-580-woox-travel
       <div class="row">
         <div class="col-lg-6 offset-lg-3">
           <div class="section-heading text-center">
-            <h2>Best Weekly Offers In Each City</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+            <h2>Penawaran Wisata Kediri</h2>
+            <p>Data diambil dari destinasi yang sudah diinput admin.</p>
           </div>
         </div>
-        <div class="col-lg-6 col-sm-6">
-          <div class="item">
-            <div class="row">
-              <div class="col-lg-6">
-                <div class="image">
-                  <img src="assets/images/deals-01.jpg" alt="">
-                </div>
-              </div>
-              <div class="col-lg-6 align-self-center">
-                <div class="content">
-                  <span class="info">*Limited Offer Today</span>
-                  <h4>Glasgow City Lorem</h4>
-                  <div class="row">
-                    <div class="col-6">
-                      <i class="fa fa-clock"></i>
-                      <span class="list">5 Days</span>
-                    </div>
-                    <div class="col-6">
-                      <i class="fa fa-map"></i>
-                      <span class="list">Daily Places</span>
-                    </div>
+        @foreach(($places ?? collect()) as $place)
+          <div class="col-lg-6 col-sm-6">
+            <div class="item">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="image" style="height:260px; overflow:hidden;">
+                    @php
+                      $fallback = asset('assets/images/country-01.jpg');
+                      $imagePath = $place->image ? 'storage/'.$place->image : null;
+                      $imageUrl = $fallback;
+                      if ($imagePath && \Illuminate\Support\Facades\Storage::disk('public')->exists($place->image)) {
+                          $imageUrl = asset($imagePath);
+                      }
+                    @endphp
+                    <img src="{{ $imageUrl }}" alt="{{ $place->name }}" style="width:100%; height:100%; object-fit:cover;">
                   </div>
-                  <p>Lorem ipsum dolor sit amet dire consectetur adipiscing elit.</p>
-                  <div class="main-button">
-                    <a href="{{ route('reservation') }}">Make a Reservation</a>
+                </div>
+                <div class="col-lg-6 align-self-center">
+                  <div class="content">
+                    <span class="info">{{ $place->category->name ?? 'Destinasi Kediri' }}</span>
+                    <h4>{{ $place->name }}</h4>
+                    <div class="row">
+                      <div class="col-6">
+                        <i class="fa fa-clock"></i>
+                        <span class="list">{{ $place->open_time ?? '00:00' }} - {{ $place->close_time ?? '24:00' }}</span>
+                      </div>
+                      <div class="col-6">
+                        <i class="fa fa-map"></i>
+                        <span class="list">{{ $place->location ?? 'Kediri' }}</span>
+                      </div>
+                    </div>
+                    <p>{{ \Illuminate\Support\Str::limit($place->description ?? 'Wisata Kediri.', 110) }}</p>
+                    <div class="main-button">
+                      <a href="{{ route('reservation') }}">Pesan sekarang</a>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-lg-6 col-sm-6">
-          <div class="item">
-            <div class="row">
-              <div class="col-lg-6">
-                <div class="image">
-                  <img src="assets/images/deals-02.jpg" alt="">
-                </div>
-              </div>
-              <div class="col-lg-6 align-self-center">
-                <div class="content">
-                  <span class="info">*Today & Tomorrow Only</span>
-                  <h4>Venezia Italy Ipsum</h4>
-                  <div class="row">
-                    <div class="col-6">
-                      <i class="fa fa-clock"></i>
-                      <span class="list">5 Days</span>
-                    </div>
-                    <div class="col-6">
-                      <i class="fa fa-map"></i>
-                      <span class="list">Daily Places</span>
-                    </div>
-                  </div>
-                  <p>Lorem ipsum dolor sit amet dire consectetur adipiscing elit.</p>
-                  <div class="main-button">
-                    <a href="{{ route('reservation') }}">Make a Reservation</a>
-                  </div>
-                </div>
-              </div>
-            </div>
+        @endforeach
+        @if(($places ?? collect())->isEmpty())
+          <div class="col-lg-12">
+            <div class="alert alert-warning">Belum ada data destinasi. Silakan tambah lewat admin.</div>
           </div>
-        </div>
-        <div class="col-lg-6 col-sm-6">
-          <div class="item">
-            <div class="row">
-              <div class="col-lg-6">
-                <div class="image">
-                  <img src="assets/images/deals-03.jpg" alt="">
-                </div>
-              </div>
-              <div class="col-lg-6 align-self-center">
-                <div class="content">
-                  <span class="info">**Undefined</span>
-                  <h4>Glasgow City Lorem</h4>
-                  <div class="row">
-                    <div class="col-6">
-                      <i class="fa fa-clock"></i>
-                      <span class="list">5 Days</span>
-                    </div>
-                    <div class="col-6">
-                      <i class="fa fa-map"></i>
-                      <span class="list">Daily Places</span>
-                    </div>
-                  </div>
-                  <p>Lorem ipsum dolor sit amet dire consectetur adipiscing elit.</p>
-                  <div class="main-button">
-                    <a href="{{ route('reservation') }}">Make a Reservation</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-6 col-sm-6">
-          <div class="item">
-            <div class="row">
-              <div class="col-lg-6">
-                <div class="image">
-                  <img src="assets/images/deals-04.jpg" alt="">
-                </div>
-              </div>
-              <div class="col-lg-6 align-self-center">
-                <div class="content">
-                  <span class="info">*Offer Until 24th March</span>
-                  <h4>Glasgow City Lorem</h4>
-                  <div class="row">
-                    <div class="col-6">
-                      <i class="fa fa-clock"></i>
-                      <span class="list">5 Days</span>
-                    </div>
-                    <div class="col-6">
-                      <i class="fa fa-map"></i>
-                      <span class="list">Daily Places</span>
-                    </div>
-                  </div>
-                  <p>This free CSS template is provided by Template Mo website.</p>
-                  <div class="main-button">
-                    <a href="{{ route('reservation') }}">Make a Reservation</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-12">
-          <ul class="page-numbers">
-            <li><a href="#"><i class="fa fa-arrow-left"></i></a></li>
-            <li><a href="#">1</a></li>
-            <li class="active"><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#"><i class="fa fa-arrow-right"></i></a></li>
-          </ul>
-        </div>
+        @endif
       </div>
     </div>
   </div>
@@ -300,8 +185,7 @@ https://templatemo.com/tm-580-woox-travel
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
-          <p>Copyright © 2036 <a href="#">WoOx Travel</a> Company. All rights reserved.
-          <br>Design: <a href="https://templatemo.com" target="_blank" title="free CSS templates">TemplateMo</a> Distribution: <a href="https://themewagon.com target="_blank" >ThemeWagon</a></p>
+          <p>Copyright © 2026 <a href="#">Portal Wisata Kediri</a>. All rights reserved.</p>
         </div>
       </div>
     </div>

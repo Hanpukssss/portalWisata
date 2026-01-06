@@ -26,6 +26,18 @@
                 <div class="mb-2"><strong>Jumlah Tiket:</strong> {{ $order->quantity }}</div>
                 <div class="mb-2"><strong>Total:</strong> Rp {{ number_format($order->total_price,0,',','.') }}</div>
                 <div class="mb-2"><strong>Dipesan pada:</strong> {{ $order->created_at->format('d M Y H:i') }}</div>
+                <div class="mt-3">
+                    <form action="{{ route('admin.orders.update', $order) }}" method="POST" class="d-flex align-items-center gap-2">
+                        @csrf
+                        @method('PUT')
+                        <label class="form-label mb-0"><strong>Status:</strong></label>
+                        <select name="status" class="form-select form-select-sm" style="max-width: 200px;" onchange="this.form.submit()">
+                            <option value="baru" @selected($order->status==='baru')>Baru</option>
+                            <option value="proses" @selected($order->status==='proses')>Proses</option>
+                            <option value="selesai" @selected($order->status==='selesai')>Selesai</option>
+                        </select>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

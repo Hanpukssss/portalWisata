@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="assets/css/owl.css">
     <link rel="stylesheet" href="assets/css/animate.css">
     <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="{{ asset('assets/css/portal-custom.css') }}">
 <!--
 
 TemplateMo 580 Woox Travel
@@ -44,7 +45,7 @@ https://templatemo.com/tm-580-woox-travel
   <!-- ***** Preloader End ***** -->
 
   <!-- ***** Header Area Start ***** -->
-  <header class="header-area header-sticky">
+  <header class="header-area header-sticky" style="background: linear-gradient(90deg, #0b5568, #0e96b2);">
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -56,14 +57,14 @@ https://templatemo.com/tm-580-woox-travel
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-                        <a href="{{ route('home') }}">Home</a>
-                        <a href="{{ route('about') }}">About</a>
-                        <a href="{{ route('deals') }}">Deals</a>
-                        <a href="{{ route('reservation') }}" class="active">Reservation</a>
+                        <li><a href="{{ route('home') }}">Home</a></li>
+                        <li><a href="{{ route('about') }}">About</a></li>
+                        <li><a href="{{ route('deals') }}">Deals</a></li>
+                        <li><a href="{{ route('reservation') }}" class="active">Reservation</a></li>
                         @guest
-                            <a href="{{ route('login') }}">Login</a>
+                            <li><a href="{{ route('login') }}">Login</a></li>
                         @else
-                            <a href="#" onclick="event.preventDefault();document.getElementById('logout-form-resv').submit();">Logout</a>
+                            <li><a href="#" onclick="event.preventDefault();document.getElementById('logout-form-resv').submit();">Logout</a></li>
                             <form id="logout-form-resv" action="{{ route('logout') }}" method="POST" style="display:none;">@csrf</form>
                         @endguest
                     </ul>
@@ -82,10 +83,10 @@ https://templatemo.com/tm-580-woox-travel
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
-          <h4>Book Prefered Deal Here</h4>
-          <h2>Make Your Reservation</h2>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt uttersi labore et dolore magna aliqua is ipsum suspendisse ultrices gravida</p>
-          <div class="main-button"><a href="/about">Discover More</a></div>
+          <h4>Pesan Penawaran Khusus di Kediri</h4>
+          <h2>Lakukan Reservasi Anda</h2>
+          <p>Pilih destinasi wisata Kediri favorit, atur tanggal kunjungan, dan pesan tiket langsung.</p>
+          <div class="main-button"><a href="/about">Temukan Selengkapnya</a></div>
         </div>
       </div>
     </div>
@@ -112,7 +113,7 @@ https://templatemo.com/tm-580-woox-travel
           <div class="info-item">
             <i class="fa fa-map-marker"></i>
             <h4>Visit Our Offices</h4>
-            <a href="#">24th Street North Avenue London, UK</a>
+            <a href="#">Jl. Pahlawan Kusuma Bangsa, Kediri</a>
           </div>
         </div>
       </div>
@@ -208,8 +209,7 @@ https://templatemo.com/tm-580-woox-travel
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
-          <p>Copyright © 2036 <a href="#">WoOx Travel</a> Company. All rights reserved.
-          <br>Design: <a href="https://templatemo.com" target="_blank" title="free CSS templates">TemplateMo</a> Distribution: <a href="https://themewagon.com target="_blank" >ThemeWagon</a></p>
+          <p>Copyright © 2026 <a href="#">Portal Wisata Kediri</a>. All rights reserved.</p>
         </div>
       </div>
     </div>

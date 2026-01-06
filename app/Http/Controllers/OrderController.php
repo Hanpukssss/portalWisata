@@ -8,6 +8,16 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    public function index(Request $request)
+    {
+        $orders = Order::with('touristPlace')
+            ->where('user_id', $request->user()->id)
+            ->latest()
+            ->paginate(10);
+
+        return view('orders.history', compact('orders'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([

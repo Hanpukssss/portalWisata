@@ -12,6 +12,8 @@ class PortalController extends Controller
     public function index(Request $request)
     {
         $q = $request->input('q');
+        $categoryId = $request->input('category_id');
+        $sort = $request->input('sort','latest');
         $placesQuery = TouristPlace::with('category')->latest();
 
         if ($q) {
@@ -21,10 +23,28 @@ class PortalController extends Controller
             });
         }
 
+        if ($categoryId) {
+            $placesQuery->where('category_id', $categoryId);
+        }
+
+        if ($sort === 'price_asc') {
+            $placesQuery->orderBy('ticket_price','asc');
+        } elseif ($sort === 'price_desc') {
+            $placesQuery->orderBy('ticket_price','desc');
+        } else {
+            $placesQuery->latest();
+        }
+
         $places = $placesQuery->paginate(9);
         $categories = Category::all();
 
-        return view('layouts.home', compact('places','categories','q'));
+        return view('layouts.home', [
+            'places' => $places,
+            'categories' => $categories,
+            'q' => $q,
+            'categoryId' => $categoryId,
+            'sort' => $sort,
+        ]);
     }
 
     // KATEGORI → PAKAI HALAMAN HOME

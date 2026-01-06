@@ -20,7 +20,8 @@ Route::get('/about', function () {
 })->name('about');
 
 Route::get('/deals', function () {
-    return view('layouts.deals');
+    $places = \App\Models\TouristPlace::with('category')->latest()->take(6)->get();
+    return view('layouts.deals', compact('places'));
 })->name('deals');
 
 Route::get('/reservation', function () {
@@ -30,27 +31,29 @@ Route::get('/reservation', function () {
 /*
 | Admin Auth
 */
-Route::middleware('guest')->group(function () {
+Route::middleware(['web','guest'])->group(function () {
     Route::get('/login', [AuthController::class,'showUserLogin'])->name('login');
     Route::post('/login', [AuthController::class,'userLogin'])->name('login.post');
     Route::get('/register', [AuthController::class,'showRegister'])->name('register');
     Route::post('/register', [AuthController::class,'register'])->name('register.post');
-
-    Route::get('/admin/login', [AuthController::class,'showLogin'])->name('admin.login');
-    Route::post('/admin/login', [AuthController::class,'login'])->name('admin.login.post');
 });
+Route::get('/admin/login', [AuthController::class,'showLogin'])->name('admin.login');
+Route::post('/admin/login', [AuthController::class,'login'])->name('admin.login.post');
 Route::post('/admin/logout', [AuthController::class,'logout'])->middleware('auth')->name('admin.logout');
 Route::post('/logout', [AuthController::class,'logout'])->middleware('auth')->name('logout');
 
 /*
 | User actions
 */
-Route::post('/orders', [OrderController::class, 'store'])->middleware(['auth','role:user'])->name('orders.store');
+Route::middleware(['web','auth','role:user'])->group(function () {
+    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('/orders/history', [OrderController::class, 'index'])->name('orders.history');
+});
 
 /*
 | Admin Panel
 */
-Route::prefix('admin')->name('admin.')->middleware(['auth','role:admin'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['web','auth','role:admin'])->group(function () {
 
     Route::get('/dashboard', function () {
         $categories = \App\Models\Category::count();
@@ -61,5 +64,5 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','role:admin'])->group
 
     Route::resource('categories', CategoryController::class);
     Route::resource('places', TouristPlaceController::class);
-    Route::resource('orders', AdminOrderController::class)->only(['index','show']);
+    Route::resource('orders', AdminOrderController::class)->only(['index','show','update']);
 });

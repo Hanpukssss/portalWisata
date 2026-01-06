@@ -19,4 +19,13 @@ class OrderController extends Controller
         $order->load(['user','touristPlace']);
         return view('admin.orders.show', compact('order'));
     }
+
+    public function update(Request $request, Order $order)
+    {
+        $request->validate([
+            'status' => 'required|in:baru,proses,selesai'
+        ]);
+        $order->update(['status' => $request->status]);
+        return back()->with('success','Status pesanan diperbarui.');
+    }
 }

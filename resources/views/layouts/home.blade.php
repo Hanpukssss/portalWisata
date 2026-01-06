@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/templatemo-woox-travel.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/owl.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/animate.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/portal-custom.css') }}">
 
   </head>
 
@@ -35,7 +36,7 @@
   <!-- ***** Preloader End ***** -->
 
   <!-- ***** Header Area Start ***** -->
-  <header class="header-area header-sticky">
+  <header class="header-area header-sticky" style="background: linear-gradient(90deg, #0b5568, #0e96b2);">
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -54,6 +55,9 @@
                         @guest
                             <li><a href="{{ route('login') }}">Login</a></li>
                         @else
+                            @if(auth()->user()->role === 'user')
+                                <li><a href="{{ route('orders.history') }}">Pesanan Saya</a></li>
+                            @endif
                             <li><a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a></li>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">@csrf</form>
                         @endguest
@@ -260,9 +264,28 @@
           <p class="text-muted mb-0">Menampilkan data yang tersimpan di database.</p>
         </div>
         <div class="col-lg-4">
-          <form method="GET" action="{{ route('home') }}" class="input-group">
-            <input type="text" name="q" class="form-control" placeholder="Cari nama atau lokasi" value="{{ $q ?? '' }}">
-            <button class="btn btn-primary" type="submit">Cari</button>
+          <form method="GET" action="{{ route('home') }}" class="row g-2">
+            <div class="col-12">
+              <input type="text" name="q" class="form-control" placeholder="Cari nama atau lokasi" value="{{ $q ?? '' }}">
+            </div>
+            <div class="col-6">
+              <select name="category_id" class="form-select">
+                <option value="">Semua kategori</option>
+                @foreach($categories as $cat)
+                  <option value="{{ $cat->id }}" @selected(($categoryId ?? null)==$cat->id)>{{ $cat->name }}</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="col-6">
+              <select name="sort" class="form-select">
+                <option value="latest" @selected(($sort ?? 'latest')==='latest')>Terbaru</option>
+                <option value="price_asc" @selected(($sort ?? '')==='price_asc')>Harga termurah</option>
+                <option value="price_desc" @selected(($sort ?? '')==='price_desc')>Harga termahal</option>
+              </select>
+            </div>
+            <div class="col-12 d-grid">
+              <button class="btn btn-primary" type="submit">Terapkan</button>
+            </div>
           </form>
         </div>
       </div>
@@ -357,7 +380,7 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
-          <p>Copyright © 2025 <a href="#">Wisata Kediri</a> Company. All rights reserved.
+          <p>Copyright © 2026 <a href="#">Portal Wisata Kediri</a>. All rights reserved.
         </div>
       </div>
     </div>

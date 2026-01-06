@@ -9,12 +9,17 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    public function showLogin()
+    public function showLogin(Request $request)
     {
-        if (auth()->check() && auth()->user()->role === 'admin') {
-            return redirect()->route('admin.dashboard');
+        if (auth()->check()) {
+            if (auth()->user()->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+            // jika login sebagai user, logout lalu tampilkan form admin
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
         }
-
         return view('admin.auth.login');
     }
 

@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->date('visit_date');
             $table->unsignedInteger('quantity')->default(1);
             $table->unsignedBigInteger('total_price')->default(0);
+            $table->string('status')->default('baru');
             $table->timestamps();
         });
     }
