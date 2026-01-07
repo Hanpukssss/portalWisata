@@ -11,8 +11,8 @@ class AuthController extends Controller
 {
     public function showLogin(Request $request)
     {
-        if (auth()->check()) {
-            if (auth()->user()->role === 'admin') {
+        if (Auth::check()) {
+            if (Auth::user()->role === 'admin') {
                 return redirect()->route('admin.dashboard');
             }
             // jika login sebagai user, logout lalu tampilkan form admin
@@ -39,7 +39,7 @@ class AuthController extends Controller
 
     public function showUserLogin()
     {
-        if (auth()->check() && auth()->user()->role === 'user') {
+        if (Auth::check() && Auth::user()->role === 'user') {
             return redirect()->route('home');
         }
 
@@ -71,7 +71,7 @@ class AuthController extends Controller
 
     public function showRegister()
     {
-        if (auth()->check()) {
+        if (Auth::check()) {
             return redirect()->route('home');
         }
         return view('auth.register');

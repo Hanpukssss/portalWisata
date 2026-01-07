@@ -70,14 +70,8 @@ class PortalController extends Controller
             ->with('category')
             ->firstOrFail();
 
-        $categories = Category::all();
-
-        // 🔥 tampilkan 1 data di section yang sama
-        return view('layouts.home', [
-            'places' => collect([$place]),
-            'categories' => $categories,
-            'featuredPlace' => $place,
-            'q' => null,
+        return view('place.detail', [
+            'place' => $place
         ]);
     }
 }

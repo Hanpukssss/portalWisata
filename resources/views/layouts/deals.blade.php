@@ -45,17 +45,14 @@ https://templatemo.com/tm-580-woox-travel
   <!-- ***** Preloader End ***** -->
 
   <!-- ***** Header Area Start ***** -->
-  <header class="header-area header-sticky" style="background: linear-gradient(90deg, #0b5568, #0e96b2);">
+  <header class="header-area header-sticky">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <nav class="main-nav">
-                    <!-- ***** Logo Start ***** -->
                     <a href="{{ route('home') }}" class="logo">
                         <img src="assets/images/logo.png" alt="">
                     </a>
-                    <!-- ***** Logo End ***** -->
-                    <!-- ***** Menu Start ***** -->
                     <ul class="nav">
                         <li><a href="{{ route('home') }}">Home</a></li>
                         <li><a href="{{ route('about') }}">About</a></li>
@@ -74,7 +71,6 @@ https://templatemo.com/tm-580-woox-travel
                     <a class='menu-trigger'>
                         <span>Menu</span>
                     </a>
-                    <!-- ***** Menu End ***** -->
                 </nav>
             </div>
         </div>
@@ -85,22 +81,11 @@ https://templatemo.com/tm-580-woox-travel
   <div class="page-heading">
     <div class="container">
       <div class="row">
-        <div class="col-lg-12">
-          <h4>Temukan Penawaran Mingguan Kami</h4>
-          <h2>Harga Luar Biasa &amp; Lainya</h2>
-          <div class="border-button"><a href="{{ route('about') }}">Discover More</a></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="search-form">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="alert alert-info mb-0">
-            Menampilkan penawaran destinasi wisata Kediri yang diinput admin.
-          </div>
+        <div class="col-lg-12 text-center">
+          <h4>Katalog Destinasi Kediri</h4>
+          <h2>Pilih yang ingin Anda kunjungi</h2>
+          <p class="text-white">Baca highlight tiap destinasi, lalu lanjutkan pesan tiket melalui halaman reservasi.</p>
+          <div class="border-button"><a href="{{ route('reservation') }}">Buka Halaman Reservasi</a></div>
         </div>
       </div>
     </div>
@@ -111,56 +96,56 @@ https://templatemo.com/tm-580-woox-travel
       <div class="row">
         <div class="col-lg-6 offset-lg-3">
           <div class="section-heading text-center">
-            <h2>Penawaran Wisata Kediri</h2>
+            <h2>Destinasi Unggulan</h2>
             <p>Data diambil dari destinasi yang sudah diinput admin.</p>
           </div>
         </div>
-        @foreach(($places ?? collect()) as $place)
-          <div class="col-lg-6 col-sm-6">
-            <div class="item">
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="image" style="height:260px; overflow:hidden;">
-                    @php
-                      $fallback = asset('assets/images/country-01.jpg');
-                      $imagePath = $place->image ? 'storage/'.$place->image : null;
-                      $imageUrl = $fallback;
-                      if ($imagePath && \Illuminate\Support\Facades\Storage::disk('public')->exists($place->image)) {
-                          $imageUrl = asset($imagePath);
-                      }
-                    @endphp
-                    <img src="{{ $imageUrl }}" alt="{{ $place->name }}" style="width:100%; height:100%; object-fit:cover;">
-                  </div>
+      </div>
+
+      @php
+        $placesCollection = ($places ?? collect());
+      @endphp
+
+      <div class="row gy-4">
+        @forelse($placesCollection as $place)
+          @php
+            $fallback = asset('assets/images/country-01.jpg');
+            $imagePath = $place->image ? 'storage/'.$place->image : null;
+            $imageUrl = $fallback;
+            if ($imagePath && \Illuminate\Support\Facades\Storage::disk('public')->exists($place->image)) {
+                $imageUrl = asset($imagePath);
+            }
+          @endphp
+          <div class="col-lg-12">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="row g-0">
+                <div class="col-md-5">
+                  <img src="{{ $imageUrl }}" alt="{{ $place->name }}" class="w-100 h-100" style="object-fit:cover; border-top-left-radius:12px; border-bottom-left-radius:12px;">
                 </div>
-                <div class="col-lg-6 align-self-center">
-                  <div class="content">
-                    <span class="info">{{ $place->category->name ?? 'Destinasi Kediri' }}</span>
-                    <h4>{{ $place->name }}</h4>
-                    <div class="row">
-                      <div class="col-6">
-                        <i class="fa fa-clock"></i>
-                        <span class="list">{{ $place->open_time ?? '00:00' }} - {{ $place->close_time ?? '24:00' }}</span>
-                      </div>
-                      <div class="col-6">
-                        <i class="fa fa-map"></i>
-                        <span class="list">{{ $place->location ?? 'Kediri' }}</span>
-                      </div>
+                <div class="col-md-7">
+                  <div class="card-body">
+                    <span class="badge bg-secondary mb-2">{{ $place->category->name ?? 'Destinasi Kediri' }}</span>
+                    <h4 class="mb-2">{{ $place->name }}</h4>
+                    <p class="text-muted">{{ $place->description ?? 'Wisata Kediri.' }}</p>
+                    <div class="row text-muted small mb-2">
+                      <div class="col-4"><i class="fa fa-clock"></i> {{ $place->open_time ?? '00:00' }} - {{ $place->close_time ?? '24:00' }}</div>
+                      <div class="col-4"><i class="fa fa-map-marker"></i> {{ $place->location ?? 'Kediri' }}</div>
+                      <div class="col-4"><i class="fa fa-ticket"></i> Rp {{ number_format($place->ticket_price ?? 0,0,',','.') }}</div>
                     </div>
-                    <p>{{ \Illuminate\Support\Str::limit($place->description ?? 'Wisata Kediri.', 110) }}</p>
-                    <div class="main-button">
-                      <a href="{{ route('reservation') }}">Pesan sekarang</a>
+                    <div class="row text-muted small mb-3">
+                      <div class="col-12"><i class="fa fa-info-circle"></i> Rekomendasi: kunjungi saat cuaca cerah, siapkan kamera untuk spot terbaik.</div>
                     </div>
+                    <a class="btn btn-outline-primary" href="{{ route('home') }}#data-wisata">Lihat detail di beranda</a>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        @endforeach
-        @if(($places ?? collect())->isEmpty())
-          <div class="col-lg-12">
-            <div class="alert alert-warning">Belum ada data destinasi. Silakan tambah lewat admin.</div>
+        @empty
+          <div class="col-12">
+            <div class="alert alert-warning mb-0">Belum ada data destinasi. Silakan tambah lewat admin.</div>
           </div>
-        @endif
+        @endforelse
       </div>
     </div>
   </div>
@@ -169,12 +154,12 @@ https://templatemo.com/tm-580-woox-travel
     <div class="container">
       <div class="row">
         <div class="col-lg-8">
-          <h2>Are You Looking To Travel ?</h2>
-          <h4>Make A Reservation By Clicking The Button</h4>
+          <h2>Ingin pesan tiket?</h2>
+          <h4>Klik tombol untuk ke halaman pemesanan.</h4>
         </div>
         <div class="col-lg-4">
           <div class="border-button">
-            <a href="{{ route('reservation') }}">Book Yours Now</a>
+            <a href="{{ route('reservation') }}">Buka halaman reservasi</a>
           </div>
         </div>
       </div>
@@ -214,3 +199,4 @@ https://templatemo.com/tm-580-woox-travel
   </body>
 
 </html>
+

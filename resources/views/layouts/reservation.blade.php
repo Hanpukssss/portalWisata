@@ -45,17 +45,14 @@ https://templatemo.com/tm-580-woox-travel
   <!-- ***** Preloader End ***** -->
 
   <!-- ***** Header Area Start ***** -->
-  <header class="header-area header-sticky" style="background: linear-gradient(90deg, #0b5568, #0e96b2);">
+  <header class="header-area header-sticky">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <nav class="main-nav">
-                    <!-- ***** Logo Start ***** -->
                     <a href="{{ route('home') }}" class="logo">
                         <img src="assets/images/logo.png" alt="">
                     </a>
-                    <!-- ***** Logo End ***** -->
-                    <!-- ***** Menu Start ***** -->
                     <ul class="nav">
                         <li><a href="{{ route('home') }}">Home</a></li>
                         <li><a href="{{ route('about') }}">About</a></li>
@@ -64,6 +61,9 @@ https://templatemo.com/tm-580-woox-travel
                         @guest
                             <li><a href="{{ route('login') }}">Login</a></li>
                         @else
+                            @if(auth()->user()->role === 'user')
+                                <li><a href="{{ route('orders.history') }}">Pesanan Saya</a></li>
+                            @endif
                             <li><a href="#" onclick="event.preventDefault();document.getElementById('logout-form-resv').submit();">Logout</a></li>
                             <form id="logout-form-resv" action="{{ route('logout') }}" method="POST" style="display:none;">@csrf</form>
                         @endguest
@@ -71,7 +71,6 @@ https://templatemo.com/tm-580-woox-travel
                     <a class='menu-trigger'>
                         <span>Menu</span>
                     </a>
-                    <!-- ***** Menu End ***** -->
                 </nav>
             </div>
         </div>
@@ -238,3 +237,4 @@ https://templatemo.com/tm-580-woox-travel
   </body>
 
 </html>
+

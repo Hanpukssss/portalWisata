@@ -1,6 +1,6 @@
 :root {
-  --primary: #0fb5c0;
-  --primary-dark: #0a8d96;
+  --primary: #1f3c88;
+  --primary-dark: #162955;
   --surface: #ffffff;
   --muted: #6b7280;
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
@@ -17,28 +17,53 @@ body {
 }
 
 .header-area {
-  background: linear-gradient(90deg, #0b5568, #0e96b2);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  padding: 12px 0;
+  background: linear-gradient(90deg, #1f3c88, #162955);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+  padding: 4px 0 2px 0;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 24px;
+}
+
+.header-area .main-nav .logo img {
+  height: 44px;
+  margin-top: 10px;
+}
+
+.header-area .nav {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 0;
+  flex-basis: auto;
+  flex-wrap: nowrap;
 }
 
 .header-area .nav li a {
   color: #f8fafc;
   font-weight: 600;
   letter-spacing: 0.2px;
+  padding: 10px 12px;
+}
+
+.header-area .nav li {
+  white-space: nowrap;
 }
 
 .header-area .nav li a:hover,
 .header-area .nav li a.active {
-  color: #0b1c2c;
-  background: rgba(255, 255, 255, 0.85);
-  border-radius: 24px;
+  color: #e5ecff;
+  background: transparent;
 }
 
 .main-button a,
 .border-button a,
 .btn-primary {
-  background: linear-gradient(90deg, #0fb5c0, #12c6d2);
+  background: linear-gradient(90deg, #1f3c88, #162955);
   border: none;
   color: #fff !important;
   font-weight: 600;
@@ -50,7 +75,7 @@ body {
 .border-button a:hover,
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 14px 28px rgba(15, 181, 192, 0.25);
+  box-shadow: 0 14px 28px rgba(31, 60, 136, 0.25);
 }
 
 .card {
@@ -60,8 +85,8 @@ body {
 }
 
 .card .badge {
-  background: rgba(15, 181, 192, 0.15);
-  color: #0b7580;
+  background: rgba(31, 60, 136, 0.12);
+  color: #162955;
   font-weight: 600;
   padding: 6px 10px;
   border-radius: 10px;
@@ -81,7 +106,7 @@ body {
 }
 
 .navbar-dark.bg-dark {
-  background: linear-gradient(90deg, #0fb5c0, #0a8d96) !important;
+  background: linear-gradient(90deg, #1f3c88, #162955) !important;
   box-shadow: var(--shadow);
 }
 
@@ -94,7 +119,7 @@ body {
 }
 
 footer {
-  background: linear-gradient(90deg, #0b5568, #0e96b2);
+  background: linear-gradient(90deg, #1f3c88, #162955);
   color: #f8fafc;
   font-weight: 600;
 }
@@ -132,4 +157,81 @@ footer {
 .alert {
   border-radius: 12px;
   box-shadow: var(--shadow);
+}
+.logo {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+
+.logo img {
+  height: 40px;
+  width: auto;
+  display: block;
+  margin: 0 16px 0 0;
+}
+
+/* Override legacy teal accents to the new navy palette */
+:root {
+  --defaultBackground: #1f3c88;
+}
+
+.call-to-action {
+  background: linear-gradient(135deg, rgba(31, 60, 136, 0.92), rgba(22, 41, 85, 0.9)), url('../images/cta-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+}
+
+.call-to-action h2,
+.call-to-action h4 {
+  color: #fff !important;
+}
+
+.call-to-action .border-button a {
+  background: linear-gradient(90deg, #1f3c88, #162955);
+  border: none;
+  color: #fff !important;
+  padding: 12px 20px;
+  border-radius: 50px;
+}
+
+.call-to-action .border-button a:hover {
+  background: #fff;
+  color: #162955 !important;
+}
+
+.search-form #search-form option {
+  background-color: #1f3c88;
+}
+
+.contact-section {
+  background: #eef2f7;
+  padding: 64px 0;
+}
+
+.contact-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 32px;
+}
+
+.contact-card h4 {
+  color: #162955;
+  font-weight: 700;
+}
+
+.contact-list i {
+  color: #1f3c88;
+  margin-right: 8px;
+}
+
+.map-frame {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  background: #fff;
+  padding: 6px;
 }

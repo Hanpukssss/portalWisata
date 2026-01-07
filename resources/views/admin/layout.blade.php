@@ -10,7 +10,7 @@
     @stack('styles')
 </head>
 <body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background: linear-gradient(90deg, #0b5568, #0e96b2) !important;">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand fw-semibold" href="{{ route('admin.dashboard') }}">Portal Wisata</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarAdmin">

@@ -36,17 +36,14 @@
   <!-- ***** Preloader End ***** -->
 
   <!-- ***** Header Area Start ***** -->
-  <header class="header-area header-sticky" style="background: linear-gradient(90deg, #0b5568, #0e96b2);">
+  <header class="header-area header-sticky">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <nav class="main-nav">
-                    <!-- ***** Logo Start ***** -->
-                    <a href="{{ route('about') }}" class="logo">
+                    <a href="{{ route('home') }}" class="logo">
                         <img src="assets/images/logo.png" alt="">
                     </a>
-                    <!-- ***** Logo End ***** -->
-                    <!-- ***** Menu Start ***** -->
                     <ul class="nav">
                         <li><a href="{{ route('home') }}">Home</a></li>
                         <li><a href="{{ route('about') }}">About</a></li>
@@ -61,12 +58,10 @@
                             <li><a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a></li>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">@csrf</form>
                         @endguest
-
                     </ul>
                     <a class='menu-trigger'>
                         <span>Menu</span>
                     </a>
-                    <!-- ***** Menu End ***** -->
                 </nav>
             </div>
         </div>
@@ -256,7 +251,7 @@
   </section>
   <!-- ***** Main Banner Area End ***** -->
 
-  <section class="py-5 bg-light">
+  <section class="py-5 bg-light" id="data-wisata">
     <div class="container">
       <div class="row align-items-center mb-4">
         <div class="col-lg-8">
